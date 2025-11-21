@@ -11,31 +11,43 @@ const AddNamesComments = () => {
   const [loading, setLoading] = useState(true);
 
   // Fetch all-save-data on mount
-  useEffect(() => {
-    const fetchAllSaveData = async () => {
-      setLoading(true);
-      try {
-        const adminToken = localStorage.getItem("admin-token");
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/admin/all-save-data`,
-          {
-            headers: {
-              Authorization: `${adminToken}`,
-            },
-          }
-        );
+ useEffect(() => {
+  const fetchAllSaveData = async () => {
+    setLoading(true);
+    try {
+      const adminToken = localStorage.getItem("admin-token");
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/admin/all-save-data`,
+        {
+          headers: {
+            Authorization: `${adminToken}`,
+          },
+        }
+      );
 
-        setAllSaveData(data?.data || data || []);
-        setFilteredData(data?.data || data || []);
-      } catch (err) {
-        setAllSaveData([]);
-        setFilteredData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAllSaveData();
-  }, []);
+      let list = data?.data || data || [];
+
+      // 🔥 Sort newest → oldest
+      list = list.sort((a, b) => {
+        if (a.createdAt && b.createdAt) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+        // fallback: sort by MongoDB _id timestamp
+        return b._id.localeCompare(a._id);
+      });
+
+      setAllSaveData(list);
+      setFilteredData(list);
+    } catch (err) {
+      setAllSaveData([]);
+      setFilteredData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchAllSaveData();
+}, []);
+
 
   // Filter data when search term changes
   useEffect(() => {
