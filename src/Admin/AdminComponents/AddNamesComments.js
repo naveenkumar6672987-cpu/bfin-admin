@@ -10,32 +10,37 @@ const OtpTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // Fetch OTP/form data from the API on mount
-  useEffect(() => {
-    const fetchOtpData = async () => {
-      setLoading(true);
-      try {
-        const adminToken = localStorage.getItem("admin-token");
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/admin/all-form-data`,
-          {
-            headers: {
-              Authorization: `${adminToken}`,
-            },
-          }
-        );
-        // Expecting data as an array of OTP/form data items
-        setOtpData(data?.data || data || []);
-        setFilteredData(data?.data || data || []);
-      } catch (err) {
-        setOtpData([]);
-        setFilteredData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOtpData();
-  }, []);
+useEffect(() => {
+  const fetchOtpData = async () => {
+    setLoading(true);
+    try {
+      const adminToken = localStorage.getItem("admin-token");
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/admin/all-form-data`,
+        {
+          headers: {
+            Authorization: `${adminToken}`,
+          },
+        }
+      );
+
+      let list = data?.data || data || [];
+
+      // 🔥 Sort latest first
+      list = list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      setOtpData(list);
+      setFilteredData(list);
+    } catch (err) {
+      setOtpData([]);
+      setFilteredData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchOtpData();
+}, []);
+
 
   // Filter data on search input
   useEffect(() => {
