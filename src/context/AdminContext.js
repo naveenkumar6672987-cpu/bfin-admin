@@ -1,5 +1,5 @@
 // src/context/AuthContext.js
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 export const AdminContext = createContext();
@@ -102,8 +102,6 @@ export const AdminProvider = ({ children }) => {
       toast.success("Images uploaded successfully");
       return response;
 
-      toast.success("Images uploaded successfully");
-      return response.data; // ✅ return only data
     } catch (error) {
       console.error("Upload Failed:", error);
       toast.error("Failed to upload images");
