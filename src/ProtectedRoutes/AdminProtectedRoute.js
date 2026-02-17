@@ -14,7 +14,7 @@ const AdminProtectedRoute = ({ children }) => {
       setIsAuthChecked(true);
     };
     checkAuth();
-  }, [verifyAdminAuth]);
+  }, [verifyAdminAuth,setIsAdminAuthenticated]);
 
   if (!isAuthChecked) {
     return <div>Loading....</div>; // or show a loader component if you have one
