@@ -1,6 +1,4 @@
 import React from "react";
-import { Upload, Image } from "lucide-react"; // optional: lucide-react icons
-import { FaUsers } from "react-icons/fa";
 
 const AdminDashboard = () => {
 
