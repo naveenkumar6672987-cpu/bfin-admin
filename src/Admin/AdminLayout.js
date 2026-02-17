@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import React, { useContext } from "react";
+import {Outlet } from "react-router-dom";
 import { AdminAuthContext } from "../context/AdminAuthContext";
 
 
 
 const AdminLayout = () => {
-  const { isAdminAuthenticated } = useContext(AdminAuthContext);
 
   return (
     <div className=" h-screen w-screen overflow-y-hidden">
